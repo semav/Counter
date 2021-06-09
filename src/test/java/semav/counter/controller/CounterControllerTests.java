@@ -35,7 +35,7 @@ class CounterControllerTests {
     private final String name = "counter name";
 
     @Test
-    void shouldCreateCounter() {
+    void create_shouldCreateCounter() {
         Counter counter = new Counter();
         CounterDto expected = new CounterDto();
 
@@ -86,7 +86,7 @@ class CounterControllerTests {
     }
 
     @Test
-    void shouldReturnAllCounters() {
+    void getAll_shouldReturnAllCounters() {
         List<Counter> counters = Collections.singletonList(new Counter());
         List<CounterDto> expected = Collections.singletonList(new CounterDto());
 
@@ -99,7 +99,7 @@ class CounterControllerTests {
     }
 
     @Test
-    void shouldReturnSum() {
+    void getSum_shouldReturnSum() {
         int expected = 1;
 
         when(counterService.getSum()).thenReturn(expected);
@@ -110,7 +110,7 @@ class CounterControllerTests {
     }
 
     @Test
-    void shouldDeleteCounter() {
+    void delete_shouldDeleteCounter() {
         counterController.delete(name);
 
         verify(counterService).delete(name);
