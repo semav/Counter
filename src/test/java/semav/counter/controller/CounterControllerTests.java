@@ -5,6 +5,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 import semav.counter.dto.CounterDto;
 import semav.counter.entity.Counter;
 import semav.counter.mapper.CounterMapper;
@@ -14,6 +16,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -45,7 +48,7 @@ class CounterControllerTests {
     }
 
     @Test
-    void shouldIncrementCounter() {
+    void increment_shouldIncrementCounter() {
         Counter counter = new Counter();
         CounterDto expected = new CounterDto();
 
@@ -58,7 +61,13 @@ class CounterControllerTests {
     }
 
     @Test
-    void shouldReturnCounter() {
+    void increment_shouldThrowExceptionWhenCounterDoesntExist() {
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> counterController.increment(name));
+        assertEquals(HttpStatus.NOT_FOUND, exception.getStatus());
+    }
+
+    @Test
+    void get_shouldReturnCounter() {
         Counter counter = new Counter();
         CounterDto expected = new CounterDto();
 
@@ -68,6 +77,12 @@ class CounterControllerTests {
         CounterDto actual = counterController.get(name);
 
         assertEquals(expected, actual);
+    }
+
+    @Test
+    void get_shouldThrowExceptionWhenCounterDoesntExist() {
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> counterController.get(name));
+        assertEquals(HttpStatus.NOT_FOUND, exception.getStatus());
     }
 
     @Test

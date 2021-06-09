@@ -5,12 +5,14 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 import semav.counter.dto.CounterDto;
 import semav.counter.entity.Counter;
 import semav.counter.mapper.CounterMapper;
 import semav.counter.service.CounterService;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController()
 @RequestMapping("/api/counter")
@@ -43,8 +45,9 @@ public class CounterController {
             @Parameter(description = "Имя счетчика")
             @PathVariable String name) {
 
-        Counter counter = counterService.increment(name);
-        return counterMapper.map(counter);
+        return Optional.ofNullable(counterService.increment(name))
+                .map(counterMapper::map)
+                .orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
     @GetMapping("/{name}")
@@ -54,8 +57,9 @@ public class CounterController {
             @Parameter(description = "Имя счетчика")
             @PathVariable String name) {
 
-        Counter counter = counterService.get(name);
-        return counterMapper.map(counter);
+        return Optional.ofNullable(counterService.get(name))
+                .map(counterMapper::map)
+                .orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
     @GetMapping

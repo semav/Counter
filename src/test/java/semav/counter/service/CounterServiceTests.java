@@ -1,9 +1,6 @@
-package semav.counter.controller;
+package semav.counter.service;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.junit.jupiter.MockitoExtension;
 import semav.counter.entity.Counter;
 import semav.counter.service.impl.InMemoryCounterService;
 
@@ -12,13 +9,11 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@ExtendWith(MockitoExtension.class)
 class CounterServiceTests {
 
     private final String name = "counter name";
 
-    @InjectMocks
-    private InMemoryCounterService counterService;
+    private InMemoryCounterService counterService = new InMemoryCounterService();
 
     @Test
     void create_shouldCreateCounter() {
